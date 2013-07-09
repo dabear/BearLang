@@ -36,6 +36,8 @@ Signatures:
 - notstartswith(string, string) or notstartswith(variablename, string)
 - notequals(string, string) or notequals(variablename, string)
 - notmatches(string, string) or notmatches(variablename, string)
+- notcontinas(string, string) or notcontinas(variablename, string)
+- notendswith(string, string) or notendswith(variablename, string)
 
 ### Operators
 BearLang supports a single boolean `and`-operator, using double ampersand(&&)
