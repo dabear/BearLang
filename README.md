@@ -6,7 +6,7 @@ BearLang is a simple code execution engine for simple truth-like statements. Bas
     Construct a Bearlang Statement in a string, and a dictionary of variables and feed it into the BearLang constructor.
     The keys in the dict will be usable as variables when execute()-ing the statements.
     
-    ```python
+  ```python     
     from bearlang import BearLang
     
     code = "startswith(poem, 'Lorem') && equals(author, 'bjorn')  )"
@@ -19,10 +19,9 @@ BearLang is a simple code execution engine for simple truth-like statements. Bas
     # parser.results contains all the test's return values
     # pprint.pprint(parser.results)
     #
-    ``` 
+  ```
+
  
-
-
 
 ## Syntax
 ### Test functions
@@ -40,7 +39,7 @@ Signatures:
 BearLang supports a single boolean `and`-operator, using double ampersand(&&)
 
 ###  Variables
-Every test function supports a variable name as it's first parameter. Variables are accepted only here. There is no variable assignment available
+Every test function supports a variable name as its first parameter. Variables are accepted only here. There is no variable assignment available
 
 Works:
    ```
@@ -53,9 +52,9 @@ foo=tracker; startswith(foo, 'http')
    ```
    
 If you need to support a foo variable as an alias for "tracker", we suggest the following:
-   ```python
+  ```python 
  adict = {"tracker": "http://tracker.dagbladet.no", "torrenttype": "multi"}
  adict["foo"] = adict["tracker"]
- parser = BearLang('startswith(foo, 'http') && equals(torrenttype, 'multi')', adict)
-   ```
+ parser = BearLang("startswith(foo, 'http') && equals(torrenttype, 'multi')", adict)
+  ```
  
