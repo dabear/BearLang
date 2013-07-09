@@ -32,15 +32,32 @@ class BearLang(object):
     __tokens = None
     __commandset = None
     results = None
+    allowed_functions = None
     def __init__(self, code, args):
 
         self.args = args
         self.code = code
         self.allowed_functions = ["startswith", "equals", "matches",
                                   "notstartswith", "notequals", "notmatches",
-                                  
+                                 
                                   
                                   ]
+    def _endswith(self, *args):
+        if len(args) is not 2:
+            raise ValueError("endswith expects exactly 2 parameters")
+        return args[0].endswith(args[1])
+    
+    def _notendswith(self, *args):
+        return not self._endswith(*args)
+    
+    def _contains(self, *args):
+        if len(args) is not 2:
+            raise ValueError("contains expects exactly 2 parameters")
+        return args[0] in arg[1]
+    
+    def _notcontains(self, *args):
+        return not self._contains(*args)
+    
     def _startswith(self, *args):
         if len(args) is not 2:
             raise ValueError("startswith expects exactly 2 parameters")
@@ -52,8 +69,10 @@ class BearLang(object):
         if len(args) is not 2:
             raise ValueError("equals expects exactly 2 parameters")
         return args[0] == args[1]
+    
     def _notequals(self, *args):
         return not self._equals(*args)
+    
     def _matches(self, *args):
         if len(args) is not 2:
             raise ValueError("matches expects exactly 2 parameters")
@@ -64,7 +83,7 @@ class BearLang(object):
     
     def _notmatches(self, *args):
         return not self._matches(*args)
-    
+  
     def _and(self, *args):
         if len(args) is not 0:
             raise ValueError("&& expects exactly 0 parameters")
@@ -76,7 +95,7 @@ class BearLang(object):
     def parse(self):
         if not self.__tokens:
             self.tokenize()
-        
+        dprint("started parsing, allowed_functions is:{0}".format(self.allowed_functions ))
         i=0
         parts = []
         command_open = False
@@ -139,6 +158,10 @@ class BearLang(object):
                 return False
             
         return True
+    
+
+
+
 
 if __name__ == '__main__':
     #
@@ -150,8 +173,13 @@ if __name__ == '__main__':
                              "tracker": "http://tracker.sometracker.com:2710/a/123456789/announce"})
     
     pprint.pprint(parser.parse())
-    #parser.execute()
+    parser.execute()
     pprint.pprint(parser.results)
+    
+
+    
+    
+    
 
 
 

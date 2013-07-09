@@ -31,6 +31,8 @@ Signatures:
 - startswith(string, string) or  startswith(variablename, string) 
 - equals(string, string) or equals(variablename, string)
 - matches(string, string) or matches(variablename, string)
+- contains(string, string) or contains(variablename, string)
+- endswith(string, string) or endswith(variablename, string)
 - notstartswith(string, string) or notstartswith(variablename, string)
 - notequals(string, string) or notequals(variablename, string)
 - notmatches(string, string) or notmatches(variablename, string)
@@ -57,4 +59,30 @@ If you need to support a foo variable as an alias for "tracker", we suggest the 
  adict["foo"] = adict["tracker"]
  parser = BearLang("startswith(foo, 'http') && equals(torrenttype, 'multi')", adict)
   ```
+
+### Extending the parser
+Create a class derived from BearLang. add your own testfunctions name to the self._allowed_functions list and create python function with an underscore.
+Example:
+ You want to add a isgreaterthan-function:
+
+  ```python
+import pprint
+class FooBearLang(BearLang):
+    def __init__(self, *args):
+        super(FooBearLang, self).__init__( *args)
+        self.allowed_functions.append("isgreaterthan")
+    def _isgreaterthan(self,*args):
+       if len(args) is not 2:
+           raise ValueError("endswith expects exactly 2 parameters")
+       return args[0] > args[1]
+    def parse(self, *args):
+        return super(FooBearLang, self).parse(*args)
+        
+code = "isgreaterthan(num, 3)"
+parser = FooBearLang(code, {"num": "6"})
+parser.parse()
+parser.execute()
+pprint.pprint(parser.results)   
+  ```
+
  
