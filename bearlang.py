@@ -1,5 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-    
 import shlex
 import re
 import pprint
@@ -143,15 +144,14 @@ if __name__ == '__main__':
     #
     # This shows a simple usage scenario
     #
-    code = "equals && startswith(tracker, 'http') && equals(torrenttype, 'multi') && matches(tracker, '^(http?)://tracker.sometracker.com' )"
+    code = "startswith(tracker, 'http') && equals(torrenttype, 'multi') && matches(tracker, '^(http?)://tracker.sometracker.com' )"
     
     parser = BearLang(code, {"torrentstatus": "6", "torrenttype": "multi",
-                             "tracker": "http://tracker.sometracker:2710/a/123456789/announce"})
+                             "tracker": "http://tracker.sometracker.com:2710/a/123456789/announce"})
     
     pprint.pprint(parser.parse())
-    parser.execute()
+    #parser.execute()
     pprint.pprint(parser.results)
-
 
 
 
