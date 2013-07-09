@@ -3,8 +3,8 @@ BearLang is a simple code execution engine for simple truth-like statements. Bas
 
 # Usage
     
-    Construct a Bearlang Statement in a string, and a dictionary of variables and feed it into the BearLang constructor.
-    The keys in the dict will be usable as variables when execute()-ing the statements.
+Construct a Bearlang Statement in a string, and a dictionary of variables and feed it into the BearLang constructor.
+The keys in the dict will be usable as variables when execute()-ing the statements.
     
   ```python     
     from bearlang import BearLang
