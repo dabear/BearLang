@@ -89,7 +89,7 @@ class BearLang(object):
             raise ValueError("&& expects exactly 0 parameters")
         return True
     def tokenize(self):
-        self.__tokens = shlex.shlex(code, posix=True)
+        self.__tokens = shlex.shlex(self.code, posix=True)
         self.__tokens.whitespace +=","
 
     def parse(self):
