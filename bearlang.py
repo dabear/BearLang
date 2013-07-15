@@ -2,9 +2,15 @@
 # -*- coding: utf-8 -*-
 """This module exports a single class BearLang
 
-
 """
 __all__ = ["BearLang"]
+__version__ = "0.9b1"
+__copyright__ = "Copyright 2013, Bjørn Inge Berg"
+__license__ = "WTFPL"
+__version__ = "1.0.1"
+__maintainer__ = "Bjørn Inge Berg"
+__email__ = "bjorninge-bearlang@bjorninge.no"
+__status__ = "Production"
 import shlex
 import re
 import pprint
