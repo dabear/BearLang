@@ -5,7 +5,7 @@ import shlex
 import re
 import pprint
 
-__shouldprint = True
+__shouldprint = False
 
 
 def list_get(l, index):
@@ -29,19 +29,17 @@ def dprint(*args):
 
 
 class BearLang(object):
-    __tokens = None
-    __commandset = None
-    results = None
-    allowed_functions = None
-    def __init__(self, code, args):
+   
+    
 
+    def __init__(self, code, args):
+        self.tokens = None
         self.args = args
         self.code = code
-        self.allowed_functions = ["startswith", "equals", "matches",
-                                  "notstartswith", "notequals", "notmatches",
-                                 
-                                  
-                                  ]
+
+        self.allowed_functions = [x.lstrip("_") for x in dir(self) if x.startswith("_") and not x.startswith("__")]
+        
+        self.commandset = None
     def _endswith(self, *args):
         if len(args) is not 2:
             raise ValueError("endswith expects exactly 2 parameters")
@@ -53,7 +51,7 @@ class BearLang(object):
     def _contains(self, *args):
         if len(args) is not 2:
             raise ValueError("contains expects exactly 2 parameters")
-        return args[0] in arg[1]
+        return args[1] in args[0]
     
     def _notcontains(self, *args):
         return not self._contains(*args)
@@ -89,18 +87,18 @@ class BearLang(object):
             raise ValueError("&& expects exactly 0 parameters")
         return True
     def tokenize(self):
-        self.__tokens = shlex.shlex(self.code, posix=True)
-        self.__tokens.whitespace +=","
-
+        self.tokens = shlex.shlex(self.code, posix=True)
+        self.tokens.whitespace +=","
+        self.tokens = list(self.tokens)
     def parse(self):
-        if not self.__tokens:
+        if not self.tokens:
             self.tokenize()
-        dprint("started parsing, allowed_functions is:{0}".format(self.allowed_functions ))
+        #dprint("\nstarted parsing, allowed_functions is:{0}".format(self.allowed_functions ))
         i=0
         parts = []
         command_open = False
         part = False
-        ltokens = list(self.__tokens)
+        ltokens = self.tokens
         
         open_tags = 0
         
@@ -133,16 +131,21 @@ class BearLang(object):
           elif not command_open and token == "&" and list_get(ltokens, i) == "&":
             parts.append(    { 'command':{ "name": "and", "args": [] } }    )
             part = parts[-1]
-        self.__commandset = parts 
+        self.commandset = parts 
         return parts  
 
     def execute(self):
-        if not self.__commandset:
+        dprint("starting executing")
+        if not self.commandset:
             self.parse()
+        if not self.commandset:
+           raise ValueError("Could not execute command. Make sure grammar and test function names are correct:{0}")
             
         results = self.results = [] 
-        for command in self.__commandset:
+        for command in self.commandset:
             args = command["command"]["args"]
+            #dprint("args[0] is {0}, self.args is".format( list_get(args, 0)) )
+            #dprint( self.args )
             if list_get(args, 0) and self.args.get(args[0]):
                 substitute = self.args.get(args[0], "")
                 dprint("arg0 of command {0} matches a predefined variable, substituting its value: {1}".format(command["command"]["name"], substitute))
@@ -156,7 +159,7 @@ class BearLang(object):
             
             if not result:
                 return False
-            
+        dprint("Exiting, self.__commandset was:{0}, code was:{1}, tokens was: {2}".format(self.commandset, self.code, self.tokens ))
         return True
     
 
@@ -168,12 +171,19 @@ if __name__ == '__main__':
     # This shows a simple usage scenario
     #
     code = "startswith(tracker, 'http') && equals(torrenttype, 'multi') && matches(tracker, '^(http?)://tracker.sometracker.com' )"
+    args = {"torrentstatus": "6", "torrenttype": "multi",
+                             "tracker": "http://tracker.sometracker.com:2710/a/123456789/announce"}
+    print("starting parsing. code was:")
+    pprint.pprint(code)
+    print("args was:")
+    pprint.pprint(args)
     
-    parser = BearLang(code, {"torrentstatus": "6", "torrenttype": "multi",
-                             "tracker": "http://tracker.sometracker.com:2710/a/123456789/announce"})
+    parser = BearLang(code, args)
     
+    print("parsed command is:")
     pprint.pprint(parser.parse())
     parser.execute()
+    print("result from parsed command:")
     pprint.pprint(parser.results)
     
 
