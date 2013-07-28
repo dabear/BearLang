@@ -1,5 +1,5 @@
 # Bearlang
-BearLang is a simple code execution engine for simple truth-like statements. Based on the shlex lexer and a custom parser, you can provide additional arguments and test functions for custom behavior.
+BearLang is a simple unix-like mini language andcode execution engine for simple truth-like statements. Based on the shlex lexer and a custom parser, you can provide additional arguments and test functions for custom behavior.
 
 # Usage
     
