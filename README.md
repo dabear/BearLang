@@ -1,5 +1,5 @@
 # Bearlang
-BearLang is a simple unix-like mini language andcode execution engine for simple truth-like statements. Based on the shlex lexer and a custom parser, you can provide additional arguments and test functions for custom behavior.
+BearLang is a simple unix-like mini language and code execution engine for simple truth-like statements. Based on the shlex lexer and a custom parser, you can provide additional arguments and test functions for custom behavior.
 
 # Usage
     
@@ -62,8 +62,8 @@ If you need to support a foo variable as an alias for "tracker", we suggest the 
  parser = BearLang("startswith(foo, 'http') && equals(torrenttype, 'multi')", adict)
   ```
 
-### Extending the parser
-Create a class derived from BearLang. add your own testfunctions name to the self._allowed_functions list and create python function with an underscore.
+### Extending the engine
+Create a class derived from BearLang. Add your own testfunction's names to the self._allowed_functions list and create a python method with a leading underscore.
 Example:
  You want to add a isgreaterthan-function:
 
